@@ -1,1 +1,1 @@
-https://jfrog.com/ -> FREE TRIAL 
+UWAGA UZYWAŁAM GITHUB PACKAGES do przechowywania biblioteki redis-cache-lib bo JFROG wymagał konta firmaowego!!
