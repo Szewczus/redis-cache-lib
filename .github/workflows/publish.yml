@@ -1,0 +1,25 @@
+name: Publish
+
+on:
+  push:
+    branches: [master] #publikacja startuje po pushu na master
+  workflow_dispatch: #przycisk Run workflow w zakładce Actions, żeby uruchomić ręcznie.
+
+permissions:
+  contents: read
+  packages: write #bez tego GITHUB_TOKEN nie może wysłać paczki i dostaniesz 403.
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+          server-id: github #musi być identyczne z <id>github</id> w pom.xml. setup-java zapisze settings.xml z loginem GITHUB_ACTOR i hasłem ze zmiennej GITHUB_TOKEN.
+      - run: mvn -B deploy #buduje, uruchamia testy i wysyła JAR do GitHub Packages.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} #przekazuje token do Mavena. Nie tworzysz żadnego sekretu, GitHub generuje go sam
